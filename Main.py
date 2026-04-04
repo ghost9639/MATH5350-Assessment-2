@@ -10,7 +10,7 @@ Project pip dependencies are numpy and matplotlib.
 
 import numpy as np
 from numba import jit
-from numba import vectorize
+from numba import njit
 import matplotlib.pyplot as plt
 import time
 from matplotlib import cbook, cm
