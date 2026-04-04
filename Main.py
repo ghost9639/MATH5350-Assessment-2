@@ -9,6 +9,8 @@ Project pip dependencies are numpy and matplotlib.
 """
 
 import numpy as np
+from numba import jit
+from numba import vectorize
 import matplotlib.pyplot as plt
 import time
 from matplotlib import cbook, cm
@@ -87,6 +89,7 @@ def input_data(S_0, r, mu, sigma, t0, T, K, E, N, M):
 # Question 2
 # ===============================================
 
+
 def price_euler (S_0, mu, sigma, t0, T, N):
     """Uses basic implementation of Euler-Maruyama method to solve SDEs.
 
@@ -116,6 +119,7 @@ def price_euler (S_0, mu, sigma, t0, T, N):
                   (sigma * S[i] * (1 + 0.9 * np.sin(2 * np.pi * t_i))) * (time_space[i+1] - time_space[i]))
     
     return S
+
 
 def price_euler_mc (S_0, mu, sigma, t0, T, N, M, seed = None, init_dW = None):
     """`numpy` accelerated Euler-Maruyama function
@@ -160,6 +164,26 @@ def price_euler_mc (S_0, mu, sigma, t0, T, N, M, seed = None, init_dW = None):
     S_approx[:, 1:] = S_0 * np.cumprod(process, axis = 1) # cumprod evaluates the process cumulatively without for loops 
 
     return S_approx
+
+@njit
+def price_euler_mc_numba (S_0, mu, sigma, t0, T, N, M):
+    """Alternative numba accelerated version using python for loops for ease of reading
+
+    Expects an initial price S_0, a drift term mu, an initial time t0, a duration T,
+    a chain count N, and a sampling number of M. Returns a numpy array. Does not validate
+    inputs to avoid numba compiling in object mode."""
+
+    dt = T / N
+    S = np.zeros ((M, N+1))
+    
+    for i in range (M):         # sample
+        S[i,0] = S_0
+        for j in range (N):     # chain
+            dW = np.sqrt(dt) * np.random.normal()
+            S[i, j+1] = S[i, j] * (1 + mu * dt + sigma * dW)
+
+    return S
+
 
 def timing_EM_functions (S_0, mu, sigma, t0, T):  
     """Performance testing function for Question 2
@@ -805,6 +829,18 @@ if __name__ == "__main__":
     plt.ylabel ("Value")
     plt.title ("Potential Projection of Seasonal Volatility Model")
     plt.show()
+
+
+    # with numbas
+    np.random.seed(1234)
+    ex = price_euler_mc_numba (100, 0.005, 0.005, 0.0, 1.5, 1, 100)
+    plt.figure(figsize=(10, 6))    
+    plt.plot (ex)               # plt happy to create x on the fly
+    plt.xlabel ("Time")
+    plt.ylabel ("Value")
+    plt.title ("Numba Projection of Seasonal Volatility Model")
+    plt.show()
+    
 
 
     # For the graph of time taken against N and M, bear in mind that it is an operation that will take
