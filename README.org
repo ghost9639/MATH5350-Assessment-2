@@ -47,7 +47,7 @@ If you have git and pip,
   cd MATH5350-Assessment-2
 
   # install any required dependencies
-  pip install numpy numba matplotlib
+  pip install numpy numba matplotlib pytest
 
   # alternatively, if you have nix
   nix-shell

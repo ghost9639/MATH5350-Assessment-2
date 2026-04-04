@@ -9,6 +9,7 @@ in
 		python-pkgs.numpy
 		python-pkgs.numba
 		python-pkgs.matplotlib
+		python-pkgs.pytest
       ]))
 	];
   }

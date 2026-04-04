@@ -1,21 +1,21 @@
 
 # Table of Contents
 
-1.  [Stochastic Differential Equation (SDE) Solver](#orga4a7cf5)
-2.  [Features](#orgbc55d45)
-    1.  [Euler-Maruyama (EM) scheme](#orgdb92c13)
-    2.  [Function Benchmarking](#orgb645a98)
-    3.  [Accuracy Analysis](#org09c38b4)
-    4.  [Runge-Kutta (RK) scheme](#org21be1e4)
-    5.  [Exotic option pricing](#org91aa583)
-    6.  [Unit Testing and Input Validation](#org861563e)
-3.  [Installation](#orgb8def5a)
-4.  [Project Insights](#org2c7d6f0)
-5.  [Potential Improvements](#org337bb89)
+1.  [Stochastic Differential Equation (SDE) Solver](#orgd6b6ed7)
+2.  [Features](#org6bf8602)
+    1.  [Euler-Maruyama (EM) scheme](#org132b012)
+    2.  [Function Benchmarking](#org96fbb8e)
+    3.  [Accuracy Analysis](#orge14c460)
+    4.  [Runge-Kutta (RK) scheme](#orga2e71ae)
+    5.  [Exotic option pricing](#org76c50a0)
+    6.  [Unit Testing and Input Validation](#org899e8d3)
+3.  [Installation](#org63d1757)
+4.  [Project Insights](#orgc03fc9c)
+5.  [Potential Improvements](#orgaf401f8)
 
 
 
-<a id="orga4a7cf5"></a>
+<a id="orgd6b6ed7"></a>
 
 # Stochastic Differential Equation (SDE) Solver
 
@@ -26,12 +26,12 @@ $$d S_t = S_t \mu dt + S_t \sigma [1 + 0.9 \sin (2 \pi t)] d W_t$$
 A seasonal volatility model is solved in the [full report](Report.pdf). The [main file](Main.py) and [unit testing](testing.py) files are also available.
 
 
-<a id="orgbc55d45"></a>
+<a id="org6bf8602"></a>
 
 # Features
 
 
-<a id="orgdb92c13"></a>
+<a id="org132b012"></a>
 
 ## Euler-Maruyama (EM) scheme
 
@@ -40,7 +40,7 @@ A seasonal volatility model is solved in the [full report](Report.pdf). The [mai
 3.  Numbas accelerated version,
 
 
-<a id="orgb645a98"></a>
+<a id="org96fbb8e"></a>
 
 ## Function Benchmarking
 
@@ -48,7 +48,7 @@ A seasonal volatility model is solved in the [full report](Report.pdf). The [mai
 2.  Time complexity across sampling and chains shown on clear 3d pyplot,
 
 
-<a id="org09c38b4"></a>
+<a id="orge14c460"></a>
 
 ## Accuracy Analysis
 
@@ -56,7 +56,7 @@ A seasonal volatility model is solved in the [full report](Report.pdf). The [mai
 2.  Errors quantified and visualised,
 
 
-<a id="org21be1e4"></a>
+<a id="orga2e71ae"></a>
 
 ## Runge-Kutta (RK) scheme
 
@@ -64,7 +64,7 @@ A seasonal volatility model is solved in the [full report](Report.pdf). The [mai
 2.  Strong and weak convergence for path-dependent options,
 
 
-<a id="org91aa583"></a>
+<a id="org76c50a0"></a>
 
 ## Exotic option pricing
 
@@ -73,7 +73,7 @@ A seasonal volatility model is solved in the [full report](Report.pdf). The [mai
 3.  Visualisation of paths and convergence,
 
 
-<a id="org861563e"></a>
+<a id="org899e8d3"></a>
 
 ## Unit Testing and Input Validation
 
@@ -81,7 +81,7 @@ A seasonal volatility model is solved in the [full report](Report.pdf). The [mai
 2.  Input validation function for function safety.
 
 
-<a id="orgb8def5a"></a>
+<a id="org63d1757"></a>
 
 # Installation
 
@@ -92,13 +92,13 @@ If you have git and pip,
     cd MATH5350-Assessment-2
     
     # install any required dependencies
-    pip install numpy numba matplotlib
+    pip install numpy numba matplotlib pytest
     
     # alternatively, if you have nix
     nix-shell
 
 
-<a id="org2c7d6f0"></a>
+<a id="orgc03fc9c"></a>
 
 # Project Insights
 
@@ -108,7 +108,7 @@ If you have git and pip,
 4.  Antithetic sampling for faster convergence,
 
 
-<a id="org337bb89"></a>
+<a id="orgaf401f8"></a>
 
 # Potential Improvements
 
