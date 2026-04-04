@@ -1,21 +1,21 @@
 
 # Table of Contents
 
-1.  [Stochastic Differential Equation (SDE) Solver](#org44746ff)
-2.  [Features](#org0a67cd2)
-    1.  [Euler-Maruyama (EM) scheme](#orgca108ea)
-    2.  [Function Benchmarking](#orgcc2a5e2)
-    3.  [Accuracy Analysis](#org2b19dde)
-    4.  [Runge-Kutta (RK) scheme](#orgd0cdecc)
-    5.  [Exotic option pricing](#org1d6d851)
-    6.  [Unit Testing and Input Validation](#org134d000)
-3.  [Installation](#orgd09e4e3)
-4.  [Project Insights](#orgb385fea)
-5.  [Potential Improvements](#org6ceb4ba)
+1.  [Stochastic Differential Equation (SDE) Solver](#orga4a7cf5)
+2.  [Features](#orgbc55d45)
+    1.  [Euler-Maruyama (EM) scheme](#orgdb92c13)
+    2.  [Function Benchmarking](#orgb645a98)
+    3.  [Accuracy Analysis](#org09c38b4)
+    4.  [Runge-Kutta (RK) scheme](#org21be1e4)
+    5.  [Exotic option pricing](#org91aa583)
+    6.  [Unit Testing and Input Validation](#org861563e)
+3.  [Installation](#orgb8def5a)
+4.  [Project Insights](#org2c7d6f0)
+5.  [Potential Improvements](#org337bb89)
 
 
 
-<a id="org44746ff"></a>
+<a id="orga4a7cf5"></a>
 
 # Stochastic Differential Equation (SDE) Solver
 
@@ -23,15 +23,15 @@ This project implements a high performance SDE solver. It employs number of appr
 
 $$d S_t = S_t \mu dt + S_t \sigma [1 + 0.9 \sin (2 \pi t)] d W_t$$
 
-A seasonal volatility model is solved in the [full report](Report.pdf).
+A seasonal volatility model is solved in the [full report](Report.pdf). The [main file](Main.py) and [unit testing](testing.py) files are also available.
 
 
-<a id="org0a67cd2"></a>
+<a id="orgbc55d45"></a>
 
 # Features
 
 
-<a id="orgca108ea"></a>
+<a id="orgdb92c13"></a>
 
 ## Euler-Maruyama (EM) scheme
 
@@ -40,7 +40,7 @@ A seasonal volatility model is solved in the [full report](Report.pdf).
 3.  Numbas accelerated version,
 
 
-<a id="orgcc2a5e2"></a>
+<a id="orgb645a98"></a>
 
 ## Function Benchmarking
 
@@ -48,7 +48,7 @@ A seasonal volatility model is solved in the [full report](Report.pdf).
 2.  Time complexity across sampling and chains shown on clear 3d pyplot,
 
 
-<a id="org2b19dde"></a>
+<a id="org09c38b4"></a>
 
 ## Accuracy Analysis
 
@@ -56,7 +56,7 @@ A seasonal volatility model is solved in the [full report](Report.pdf).
 2.  Errors quantified and visualised,
 
 
-<a id="orgd0cdecc"></a>
+<a id="org21be1e4"></a>
 
 ## Runge-Kutta (RK) scheme
 
@@ -64,7 +64,7 @@ A seasonal volatility model is solved in the [full report](Report.pdf).
 2.  Strong and weak convergence for path-dependent options,
 
 
-<a id="org1d6d851"></a>
+<a id="org91aa583"></a>
 
 ## Exotic option pricing
 
@@ -73,7 +73,7 @@ A seasonal volatility model is solved in the [full report](Report.pdf).
 3.  Visualisation of paths and convergence,
 
 
-<a id="org134d000"></a>
+<a id="org861563e"></a>
 
 ## Unit Testing and Input Validation
 
@@ -81,7 +81,7 @@ A seasonal volatility model is solved in the [full report](Report.pdf).
 2.  Input validation function for function safety.
 
 
-<a id="orgd09e4e3"></a>
+<a id="orgb8def5a"></a>
 
 # Installation
 
@@ -98,7 +98,7 @@ If you have git and pip,
     nix-shell
 
 
-<a id="orgb385fea"></a>
+<a id="org2c7d6f0"></a>
 
 # Project Insights
 
@@ -108,7 +108,7 @@ If you have git and pip,
 4.  Antithetic sampling for faster convergence,
 
 
-<a id="org6ceb4ba"></a>
+<a id="org337bb89"></a>
 
 # Potential Improvements
 

@@ -7,7 +7,7 @@ This project implements a high performance SDE solver. It employs number of appr
 
 $$d S_t = S_t \mu dt + S_t \sigma [1 + 0.9 \sin (2 \pi t)] d W_t$$
 
-A seasonal volatility model is solved in the [[file:Report.pdf][full report]].
+A seasonal volatility model is solved in the [[file:Report.pdf][full report]]. The [[file:Main.py][main file]] and [[file:testing.py][unit testing]] files are also available.
 
 * Features
 
