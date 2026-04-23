@@ -19,39 +19,6 @@ This project features a Main Monte Carlo engine written entirely in C++, which c
 
 This project uses [[https://github.com/google/googletest][Google Test]] to validate internal function accuracy, ensuring that the logic remains reliable under changes. Tests can be accessed by using the typical CTest commands (`cmake --build build --target test`).
 
-** Building Local Library
-
-Building the local library is easy and requires relatively few build tools, depending on a C++17 installation, CMake (any version above 3.5), Git, and Ninja. On MacOS / Linux:
-
-#+begin_src shell
-  git clone https://github.com/ghost9639/Monte-Carlo-Engine
-  cd Monte-Carlo-Engine
-
-  rm -rf build
-  mkdir build
-
-  cmake -S . -B build -G Ninja
-  cmake --build build
-
-  export PYTHONPATH=$PYTHONPATH:$(pwd)/build
-  python <YOUR_PYTHON_FILE>
-#+end_src
-
-On Windows:
-
-#+begin_src shell
-  git clone https://github.com/ghost9639/Monte-Carlo-Engine
-  cd Monte-Carlo-Engine
-
-  cmake -S . -B build -G Ninja
-  cmake --build build
-
-  # One of:
-  set PYTHONPATH=%PYTHONPATH%;%cd%\build # if using cmd
-  $env:PYTHONPATH = "$env:PYTHONPATH;$(Get-Location)\build" # if using powershell
-
-  python <YOUR_PYTHON_FILE>
-#+end_src
 
 
 * Features
@@ -97,6 +64,41 @@ If you have git and pip,
   # alternatively, if you have nix
   nix-shell
 #+end_src
+
+** Building Local Library
+
+Building the local library is easy and requires relatively few build tools, depending on a C++17 installation, CMake (any version above 3.5), Git, and Ninja. On MacOS / Linux:
+
+#+begin_src shell
+  git clone https://github.com/ghost9639/Monte-Carlo-Engine
+  cd Monte-Carlo-Engine
+
+  rm -rf build
+  mkdir build
+
+  cmake -S . -B build -G Ninja
+  cmake --build build
+
+  export PYTHONPATH=$PYTHONPATH:$(pwd)/build
+  python <YOUR_PYTHON_FILE>
+#+end_src
+
+On Windows:
+
+#+begin_src shell
+  git clone https://github.com/ghost9639/Monte-Carlo-Engine
+  cd Monte-Carlo-Engine
+
+  cmake -S . -B build -G Ninja
+  cmake --build build
+
+  # One of:
+  set PYTHONPATH=%PYTHONPATH%;%cd%\build # if using cmd
+  $env:PYTHONPATH = "$env:PYTHONPATH;$(Get-Location)\build" # if using powershell
+
+  python <YOUR_PYTHON_FILE>
+#+end_src
+
 
 * Project Insights
 
