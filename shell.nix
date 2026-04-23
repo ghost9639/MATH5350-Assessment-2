@@ -5,6 +5,9 @@ in
   
   pkgs.mkShell {
 	packages = [
+	  pkgs.ninja
+	  pkgs.cmake
+	  pkgs.gcc
       (pkgs.python3.withPackages (python-pkgs: [
 		python-pkgs.numpy
 		python-pkgs.numba

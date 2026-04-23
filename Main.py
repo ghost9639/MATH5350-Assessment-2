@@ -7,9 +7,8 @@ disconnected function call.
 
 Project pip dependencies are numpy and matplotlib.
 """
-
+from scipy.stats import norm
 import numpy as np
-from numba import jit
 from numba import njit
 import matplotlib.pyplot as plt
 import time
@@ -17,6 +16,16 @@ from matplotlib import cbook, cm
 from matplotlib.colors import LightSource
 import warnings
 warnings.filterwarnings("error")
+
+
+test_values = [0.0000001, 0.000001, 0.0001, 0.1, 0.3, 0.5, 0.6, 0.744, 0.819, 0.956, 0.99999]
+for val in test_values:
+    print(f"EXPECT_Near(NormalInverse({val}), {norm.ppf(val)});")
+
+
+
+# 
+norm.ppf(0.0000001)
 
 
 # ===============================================
@@ -121,7 +130,7 @@ def price_euler (S_0, mu, sigma, t0, T, N):
     return S
 
 
-def price_euler_mc (S_0, mu, sigma, t0, T, N, M, seed = None, init_dW = None):
+def price_euler_mc (S_0, mu, sigma, t0, T, N, M, seed = None, init_dW = None): 
     """`numpy` accelerated Euler-Maruyama function
 
     Expects Initial Stock price (S_0), drift term (mu), volatility (sigma), initial time (t),

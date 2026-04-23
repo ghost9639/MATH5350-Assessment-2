@@ -9,6 +9,51 @@ $$d S_t = S_t \mu dt + S_t \sigma [1 + 0.9 \sin (2 \pi t)] d W_t$$
 
 A seasonal volatility model is solved in the [[file:Report.pdf][full report]]. The [[file:Main.py][main file]] and [[file:testing.py][unit testing]] files are also available.
 
+* C++ Integration
+
+** Monte Carlo Sampling Library
+
+This project features a Main Monte Carlo engine written entirely in C++, which connects to Python using [[https://github.com/pybind/pybind11][pybind11]]. The high speed library includes an inverse quantile transform leveraging Padé approximation based on Abramowitz and Stegun. Documentation is included [[file:docs/html/index.html][for library functions]]. All functions export to vectorised numpy arrays, which work extremely well with pandas and numpy functions in general. This ensures seamless integration into existing toolsets.
+
+** Unit Testing
+
+This project uses [[https://github.com/google/googletest][Google Test]] to validate internal function accuracy, ensuring that the logic remains reliable under changes. Tests can be accessed by using the typical CTest commands (`cmake --build build --target test`).
+
+** Building Local Library
+
+Building the local library is easy and requires relatively few build tools, depending on a C++17 installation, CMake (any version above 3.5), Git, and Ninja. On MacOS / Linux:
+
+#+begin_src shell
+  git clone https://github.com/ghost9639/Monte-Carlo-Engine
+  cd Monte-Carlo-Engine
+
+  rm -rf build
+  mkdir build
+
+  cmake -S . -B build -G Ninja
+  cmake --build build
+
+  export PYTHONPATH=$PYTHONPATH:$(pwd)/build
+  python <YOUR_PYTHON_FILE>
+#+end_src
+
+On Windows:
+
+#+begin_src shell
+  git clone https://github.com/ghost9639/Monte-Carlo-Engine
+  cd Monte-Carlo-Engine
+
+  cmake -S . -B build -G Ninja
+  cmake --build build
+
+  # One of:
+  set PYTHONPATH=%PYTHONPATH%;%cd%\build # if using cmd
+  $env:PYTHONPATH = "$env:PYTHONPATH;$(Get-Location)\build" # if using powershell
+
+  python <YOUR_PYTHON_FILE>
+#+end_src
+
+
 * Features
 
 ** Euler-Maruyama (EM) scheme

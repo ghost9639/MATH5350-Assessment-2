@@ -19,7 +19,7 @@ id_ed25519
 *_archive
 *.tex
 cw*
-
+build/*
 
 # edraw
 *.svg
