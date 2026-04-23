@@ -1,25 +1,25 @@
 
 # Table of Contents
 
-1.  [Stochastic Differential Equation (SDE) Solver](#orgf746868)
-2.  [C++ Integration](#orgf8250d6)
-    1.  [Monte Carlo Sampling Library](#orgc89328b)
-    2.  [Unit Testing](#org31f9957)
-3.  [Features](#orgeb81baa)
-    1.  [Euler-Maruyama (EM) scheme](#org73b2f3c)
-    2.  [Function Benchmarking](#orgd4e856e)
-    3.  [Accuracy Analysis](#org9a6947a)
-    4.  [Runge-Kutta (RK) scheme](#orgd318ab0)
-    5.  [Exotic option pricing](#org6026759)
-    6.  [Unit Testing and Input Validation](#org2900799)
-4.  [Installation](#org6c79285)
-    1.  [Building Local Library](#org37ed8c9)
-5.  [Project Insights](#orgeb7983d)
-6.  [Potential Improvements](#orgc94e577)
+1.  [Stochastic Differential Equation (SDE) Solver](#orgf9388b7)
+2.  [C++ Integration](#org1c3219e)
+    1.  [Monte Carlo Sampling Library](#org873695c)
+    2.  [Unit Testing](#org0610d25)
+3.  [Features](#org0841710)
+    1.  [Euler-Maruyama (EM) scheme](#orgeb8e88e)
+    2.  [Function Benchmarking](#org806008f)
+    3.  [Accuracy Analysis](#org68916af)
+    4.  [Runge-Kutta (RK) scheme](#org8b44b7d)
+    5.  [Exotic option pricing](#org7860289)
+    6.  [Unit Testing and Input Validation](#org28b12ee)
+4.  [Installation](#org5515948)
+    1.  [Building Local Library](#org3fced1e)
+5.  [Project Insights](#org6d0a5bb)
+6.  [Potential Improvements](#orgc1b3328)
 
 
 
-<a id="orgf746868"></a>
+<a id="orgf9388b7"></a>
 
 # Stochastic Differential Equation (SDE) Solver
 
@@ -30,31 +30,31 @@ $$d S_t = S_t \mu dt + S_t \sigma [1 + 0.9 \sin (2 \pi t)] d W_t$$
 A seasonal volatility model is solved in the [full report](Report.pdf). The [main file](Main.py) and [unit testing](testing.py) files are also available.
 
 
-<a id="orgf8250d6"></a>
+<a id="org1c3219e"></a>
 
 # C++ Integration
 
 
-<a id="orgc89328b"></a>
+<a id="org873695c"></a>
 
 ## Monte Carlo Sampling Library
 
 This project features a Main Monte Carlo engine written entirely in C++, which connects to Python using [pybind11](https://github.com/pybind/pybind11). The high speed library includes an inverse quantile transform leveraging Padé approximation based on Abramowitz and Stegun. Documentation is included [for library functions](docs/html/index.html). All functions export to vectorised numpy arrays, which work extremely well with pandas and numpy functions in general. This ensures seamless integration into existing toolsets.
 
 
-<a id="org31f9957"></a>
+<a id="org0610d25"></a>
 
 ## Unit Testing
 
 This project uses [Google Test](https://github.com/google/googletest) to validate internal function accuracy, ensuring that the logic remains reliable under changes. Tests can be accessed by using the typical CTest commands (\`cmake &ndash;build build &ndash;target test\`).
 
 
-<a id="orgeb81baa"></a>
+<a id="org0841710"></a>
 
 # Features
 
 
-<a id="org73b2f3c"></a>
+<a id="orgeb8e88e"></a>
 
 ## Euler-Maruyama (EM) scheme
 
@@ -63,7 +63,7 @@ This project uses [Google Test](https://github.com/google/googletest) to validat
 3.  Numbas accelerated version,
 
 
-<a id="orgd4e856e"></a>
+<a id="org806008f"></a>
 
 ## Function Benchmarking
 
@@ -71,7 +71,7 @@ This project uses [Google Test](https://github.com/google/googletest) to validat
 2.  Time complexity across sampling and chains shown on clear 3d pyplot,
 
 
-<a id="org9a6947a"></a>
+<a id="org68916af"></a>
 
 ## Accuracy Analysis
 
@@ -79,7 +79,7 @@ This project uses [Google Test](https://github.com/google/googletest) to validat
 2.  Errors quantified and visualised,
 
 
-<a id="orgd318ab0"></a>
+<a id="org8b44b7d"></a>
 
 ## Runge-Kutta (RK) scheme
 
@@ -87,7 +87,7 @@ This project uses [Google Test](https://github.com/google/googletest) to validat
 2.  Strong and weak convergence for path-dependent options,
 
 
-<a id="org6026759"></a>
+<a id="org7860289"></a>
 
 ## Exotic option pricing
 
@@ -96,7 +96,7 @@ This project uses [Google Test](https://github.com/google/googletest) to validat
 3.  Visualisation of paths and convergence,
 
 
-<a id="org2900799"></a>
+<a id="org28b12ee"></a>
 
 ## Unit Testing and Input Validation
 
@@ -104,7 +104,7 @@ This project uses [Google Test](https://github.com/google/googletest) to validat
 2.  Input validation function for function safety.
 
 
-<a id="org6c79285"></a>
+<a id="org5515948"></a>
 
 # Installation
 
@@ -121,7 +121,7 @@ If you have git and pip,
     nix-shell
 
 
-<a id="org37ed8c9"></a>
+<a id="org3fced1e"></a>
 
 ## Building Local Library
 
@@ -129,9 +129,6 @@ Building the local library is easy and requires relatively few build tools, depe
 
     git clone https://github.com/ghost9639/Monte-Carlo-Engine
     cd Monte-Carlo-Engine
-    
-    rm -rf build
-    mkdir build
     
     cmake -S . -B build -G Ninja
     cmake --build build
@@ -154,7 +151,7 @@ On Windows:
     python <YOUR_PYTHON_FILE>
 
 
-<a id="orgeb7983d"></a>
+<a id="org6d0a5bb"></a>
 
 # Project Insights
 
@@ -164,7 +161,7 @@ On Windows:
 4.  Antithetic sampling for faster convergence,
 
 
-<a id="orgc94e577"></a>
+<a id="orgc1b3328"></a>
 
 # Potential Improvements
 

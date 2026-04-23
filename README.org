@@ -73,9 +73,6 @@ Building the local library is easy and requires relatively few build tools, depe
   git clone https://github.com/ghost9639/Monte-Carlo-Engine
   cd Monte-Carlo-Engine
 
-  rm -rf build
-  mkdir build
-
   cmake -S . -B build -G Ninja
   cmake --build build
 
