@@ -7,7 +7,6 @@ disconnected function call.
 
 Project pip dependencies are numpy and matplotlib.
 """
-from scipy.stats import norm
 import numpy as np
 from numba import njit
 import matplotlib.pyplot as plt
@@ -18,15 +17,15 @@ import warnings
 warnings.filterwarnings("error")
 
 
-test_values = [0.0000001, 0.000001, 0.0001, 0.1, 0.3, 0.5, 0.6, 0.744, 0.819, 0.956, 0.99999]
-for val in test_values:
-    print(f"EXPECT_Near(NormalInverse({val}), {norm.ppf(val)});")
+_MCS_on = False
 
-
-
-# 
-norm.ppf(0.0000001)
-
+try:
+    import MonteCarloSampling as mcs
+    _MCS_on = True
+    print("Local Monte Carlo Library Loaded!")
+except ImportError:
+    _MCS_on = False
+    print("Local Monte Carlo Library failed to load.")
 
 # ===============================================
 # Question 1 
@@ -117,8 +116,12 @@ def price_euler (S_0, mu, sigma, t0, T, N):
     time_space = [0 for i in range (N+1)] # time interval 
     S = [S_0 for i in range (N+1)]
 
-    for i in range (N): 
-        psi = np.random.normal(0, 1) # random walk samples
+    for i in range (N):
+        if _MCS_on:
+            psi = mcs.InverseNormalSampler()[0]
+        else:
+            psi = np.random.normal(0, 1) # random walk samples
+            
         time_space[i+1] = time_space[i] + np.sqrt(delta_t) * psi
 
     for i in range (N):
@@ -156,12 +159,18 @@ def price_euler_mc (S_0, mu, sigma, t0, T, N, M, seed = None, init_dW = None):
         dW = init_dW.reshape(M, N, m).sum(axis=2)
     elif seed is not None:
         np.random.seed(seed)
-        dW = np.sqrt(dt) * np.random.normal (size = (M, N)) # basic version, just make N values
+        if _MCS_on:
+            dW = np.sqrt(dt) * mcs.InverseNormalSampler(0.0, 1.0, [M,N])
+        else:
+            dW = np.sqrt(dt) * np.random.normal (size = (M, N)) # basic version, just make N values
     # ========== INTERNAL STUFF ==============
 
     # path the program usually takes
     else:
-        dW = np.sqrt(dt) * np.random.normal (size = (M, N)) # basic version, just make N values         
+        if _MCS_on:
+            dW = np.sqrt(dt) * mcs.InverseNormalSampler(0.0, 1.0, [M,N])
+        else:
+            dW = np.sqrt(dt) * np.random.normal (size = (M, N)) # basic version, just make N values
 
     Vega = sigma * (1 + 0.9 * np.sin(2 * np.pi * t[:-1]))
 
@@ -206,8 +215,8 @@ def timing_EM_functions (S_0, mu, sigma, t0, T):
     This function can be extremely slow depending on the inputs for the exact calculation
     function."""
 
-    n_testing = np.array([10, 100, 1000, 10_000]) # We'll use these as discrete times 
-    M_testing = np.array([10, 100, 1000, 10_000]) # We'll use these as sampling numbers
+    n_testing = np.array([10, 100, 1000, 10000]) # We'll use these as discrete times 
+    M_testing = np.array([10, 100, 1000, 10000]) # We'll use these as sampling numbers
 
     times_1 = np.zeros((len(n_testing), len(M_testing)))                           # holds base speeds 
     times_2 = np.zeros((len(n_testing), len(M_testing)))                           # holds numpy speeds 
@@ -342,10 +351,16 @@ def exact_function (S_0, mu, sigma, t0, T, N_cont = 100_000, M = 500, seed = Non
                                 # to use the same Brownian motion trajectory
     elif seed is not None:
         np.random.seed(seed)
+        if _MCS_on:
+            dW_cont = np.sqrt(dt_cont) * mcs.InverseNormalSampler(0.0, 1.0, [M, N_cont])
+        else:
+            dW_cont = np.sqrt(dt_cont) * np.random.normal (size = (M, N_cont))
 
     else:
-        dW_cont = np.sqrt(dt_cont) * np.random.normal (size = (M, N_cont))
-        
+        if _MCS_on:
+            dW_cont = np.sqrt(dt_cont) * mcs.InverseNormalSampler(0.0, 1.0, [M, N_cont])
+        else:
+            dW_cont = np.sqrt(dt_cont) * np.random.normal (size = (M, N_cont))
 
     # we can now emplace the known Brownian motion path into the exact solution
 
@@ -394,7 +409,11 @@ def function_variability_quantified (S_0, mu, sigma, t0, T, N_cont = 100_000, M 
     terminal_err = np.zeros(len(N))     # this holds the norm between the final values between the approx paths and ""
 
     dt_cont = T / N_cont
-    dW_cont = np.sqrt(dt_cont) * np.random.normal (size=(M, N_cont))
+
+    if _MCS_on:
+        dW_cont = np.sqrt(dt_cont) * mcs.InverseNormalSampler(0.0, 1.0, [M,N_cont])
+    else:
+        dW_cont = np.sqrt(dt_cont) * np.random.normal (size=(M, N_cont))
                                                                         
     for i, n_splits in enumerate(N):           # we want to try different MC sample levels
 
@@ -445,7 +464,11 @@ def function_variability_visualiser (S_0, mu, sigma, t0, T, N_discrete = 10_000,
         np.random.seed(seed)
 
     dt_cont = T / N_cont
-    dW_cont = np.sqrt(dt_cont) * np.random.normal (size = (M, N_cont)) # brownian motion process 
+
+    if _MCS_on:
+        dW_cont = np.sqrt(dt_cont) * mcs.InverseNormalSampler (0.0, 1.0, [M, N_cont])
+    else:
+        dW_cont = np.sqrt(dt_cont) * np.random.normal (size = (M, N_cont)) # brownian motion process 
 
     # exact function call 
     S_exact, t_cont = exact_function(S_0, mu, sigma, t0, T, N_cont, M, seed, init_dW = dW_cont)
@@ -519,8 +542,11 @@ def price_rk_mc (S_0, mu, sigma, t0, T, N, M):
     S[:,0] = S_0
 
     for i in range (N):         # forced to use for loop due to nested S_hat recurrence relation 
-        
-        dW = np.sqrt(dt) * np.random.normal (size = M) # numpy can implicitly format the scaled z-samples as a vector
+
+        if _MCS_on:
+            dW = np.sqrt(dt) * mcs.InverseNormalSampler(0.0, 1.0, [M])
+        else:
+            dW = np.sqrt(dt) * np.random.normal (size = M) # numpy can implicitly format the scaled z-samples as a vector
 
         # we can calculate variables early for ease of reading
         a = S[:,i] * mu
@@ -529,7 +555,7 @@ def price_rk_mc (S_0, mu, sigma, t0, T, N, M):
         b = S[:,i] * Vega 
 
         # correction term 
-        S_hat = S[:,i] + a * dt + b * np.sqrt(dt)
+        S_hat = S[:,i] + a * dt + b * np.sqrt(dt) 
         b_hat = S_hat * Vega
 
         
@@ -599,17 +625,21 @@ def shout_price_rk_mc (S_0, r, mu, sigma, t0, T, K, E, N, M, _full_return = Fals
     t = np.linspace(t0, t0+T, N+1) # linspace creates an array between two bounds with N subdivisions
 
     current_S = np.full(M, S_0, dtype=np.float64) # vector of "S_{n-1}" values
+
     
     shouted = np.zeros (M, dtype=bool) # tagged shouts
-    locked = np.zeros (M, dtype=np.float64)  # bagged shouts 
+    locked = np.zeros (M, dtype=np.float64)  # bagged shouts
     shout_index = np.full (M, -1, dtype=int) # house shouts
 
     paths = np.zeros ((M, N+1)) # actual path 
     paths[:,0] = S_0 
     
     for i in range (N):         # forced to use for loop due to nested S_hat recurrence relation 
-        
-        dW = np.sqrt(dt) * np.random.normal (size = M) # numpy can implicitly format the scaled z-samples as a vector
+
+        if _MCS_on:
+            dW = np.sqrt(dt) * mcs.InverseNormalSampler (0.0, 1.0, [M])
+        else:
+            dW = np.sqrt(dt) * np.random.normal (size = M) # numpy can implicitly format the scaled z-samples as a vector
 
         # S[S[:,:]>=(E,t0)] # slicing for options below shout price since they close above shout price?
         
@@ -696,8 +726,11 @@ def antithetic_shout_price_rk_mc (S_0, r, mu, sigma, t0, T, K, E, N, M, _full_re
     half = M // 2
     
     for i in range (N):         # forced to use for loop due to nested S_hat recurrence relation 
-        
-        dW_half = np.sqrt(dt) * np.random.normal (size = half) # positive and negative halves for antithetic
+
+        if _MCS_on:
+            dW_half = np.sqrt(dt) * mcs.InverseNormalSampler(0.0, 1.0, [half])
+        else:
+            dW_half = np.sqrt(dt) * np.random.normal (size = half) # positive and negative halves for antithetic
         # dW = np.vstack([dW_half, -dW_half])[:M]                     # vstack vertically aligns two arrays
         dW = np.concatenate([dW_half, -dW_half])
 
@@ -855,15 +888,15 @@ if __name__ == "__main__":
     # For the graph of time taken against N and M, bear in mind that it is an operation that will take
     # several minutes, I've left it commented out here but you can try to replicate it if you really want to 
 
-    # n_t, M_t, t_1, t_2 = timing_EM_functions(100, 0.005, 0.005, 0, 1.5)    
+    # n_t, M_t, t_1, t_2 = timing_EM_functions(100, 0.005, 0.005, 0, 1.5)
 
-    # plotting_3d_efficiency(n_t, M_t, t_1, t_2, _logged_plot=False)        
+    # plotting_3d_efficiency(n_t, M_t, t_1, t_2, _logged_plot=False)     
     # plotting_3d_efficiency(n_t, M_t, t_1, t_2)        
     
 
     # We want to have a visual idea of how accuracy changes with N and M
 
-    np.random.seed(1234)    
+    np.random.seed(1234)
     function_variability_visualiser (100, 0.05, 0.2, 0.0, 1.0, N_discrete=100, M=100)
     function_variability_visualiser (100, 0.05, 0.2, 0.0, 1.0, N_discrete=10_000, M=1000)
 
